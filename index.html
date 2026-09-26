@@ -16,7 +16,9 @@ a{text-decoration:none;color:inherit}
 /* ---------- 1. fixed 1172x657 design canvas, scaled by one transform ---------- */
 .stage{position:fixed;inset:0;overflow:hidden;background:#020204}
 .canvas{position:absolute;left:50%;top:0;width:1172px;height:657px;
-  transform:translateX(-50%) scale(var(--k,1));transform-origin:50% 0}
+  /* zoom (not transform:scale) so the browser re-rasterises at the real size:
+     a scale transform upsamples a 1x bitmap and makes text and cards look soft */
+  transform:translateX(-50%);zoom:var(--k,1)}
 .canvas>*{position:absolute}
 .stack{position:absolute;inset:0;z-index:300}
 .stack>*{position:absolute}
@@ -275,7 +277,7 @@ a{text-decoration:none;color:inherit}
 
 /* ---------- phone <=700: a genuine flow column ---------- */
 @media (max-width:700px){
-  .canvas{position:relative;left:auto;top:auto;width:100%;height:100%;transform:none;
+  .canvas{position:relative;left:auto;top:auto;width:100%;height:100%;transform:none;zoom:1;
     display:flex;flex-direction:column;align-items:center;padding:0 20px}
   .canvas>*{position:static}
   .stack{display:contents}
