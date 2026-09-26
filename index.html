@@ -2,7 +2,8 @@
 <html lang="en-US">
 <head>
 <meta charset="utf-8">
-<title>Vision — Streamline the shop virtual</title>
+<title>Aston Rowe — Construction websites that win leads</title>
+<meta name="description" content="Aston Rowe builds websites for construction companies and trades that actually generate leads: calls, quote requests and booked jobs.">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -10,6 +11,7 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{background:#020204;overflow-x:clip}
+html{scroll-behavior:smooth}
 body{font-family:Poppins,Inter,system-ui,sans-serif;color:#fff;-webkit-font-smoothing:antialiased}
 a{text-decoration:none;color:inherit}
 
@@ -41,12 +43,12 @@ a{text-decoration:none;color:inherit}
   box-shadow:inset 0 1px 0 rgba(255,255,255,.03)}
 .mark{position:absolute;left:21px;top:19px;width:24px;height:24px;
   filter:drop-shadow(0 0 6px rgba(60,224,255,.75))}
-.wm{position:absolute;left:50px;top:0;white-space:nowrap}
+.wm{position:absolute;left:24px;top:0;white-space:nowrap}
 .wm .kick{position:absolute;left:3px;top:20px;font-size:4.4px;font-weight:600;
   letter-spacing:.10em;color:#fff;opacity:.92;line-height:1}
 .wm .name{position:absolute;left:0;top:26px;transform-origin:0 50%;
   font-family:Poppins;font-weight:900;font-size:22px;line-height:1;
-  letter-spacing:-.01em;color:#fff}
+  letter-spacing:-.01em;word-spacing:.18em;color:#fff}
 .links{position:absolute;left:156px;top:0;height:62px;transform-origin:0 50%;
   display:flex;align-items:center;gap:24px}
 .links a{font-size:12.5px;font-weight:400;color:rgba(255,255,255,.92);
@@ -127,6 +129,7 @@ a{text-decoration:none;color:inherit}
   font-size:13.2px;color:#a9aeb5;z-index:300}
 .sub b{font-weight:600;color:#fff}
 .nb{white-space:nowrap}
+.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
 /* ---------- 6. 3D carousel ring ---------- */
 .showcase{position:absolute;left:0;top:0;width:1172px;height:0}
@@ -256,7 +259,7 @@ a{text-decoration:none;color:inherit}
     margin-top:clamp(10px,1.5vh,15px);flex:0 0 auto}
   /* logo lockup: mark centre and wordmark cap centre pinned to the pill's mid */
   .mark{left:16px;top:calc(50% - 13px);width:26px;height:26px}
-  .wm{left:49px;top:0;height:100%}
+  .wm{left:20px;top:0;height:100%}
   .wm .kick{top:calc(50% - 15px);font-size:5px;letter-spacing:.2em}
   .wm .name{top:calc(50% - 9px);font-size:18px;transform:scaleX(.88);transform-origin:left center}
   .burger{right:8px;top:7px;width:44px;height:44px}
@@ -271,8 +274,8 @@ a{text-decoration:none;color:inherit}
   .badge i svg{width:13px;height:19px}
   /* 7.4em sits between STREAMLINE (6.36em) and STREAMLINE THE (8.45em): the break always balances */
   .h1{position:relative;left:auto;top:auto;transform:none;white-space:normal;
-    text-align:center;font-size:clamp(29px,8.4vw,36px);line-height:1.06;
-    letter-spacing:-.01em;max-width:7.4em}
+    text-align:center;font-size:clamp(20px,6.6vw,36px);line-height:1.06;
+    letter-spacing:-.01em;max-width:none;text-wrap:balance}
   .h1.l1{margin-top:clamp(12px,2.2vh,20px)}
   .sub{position:relative;left:auto;top:auto;transform:none;white-space:normal;
     text-align:center;font-size:clamp(14px,3.9vw,15.5px);line-height:1.5;max-width:340px}
@@ -330,39 +333,23 @@ setTimeout(function(){document.documentElement.classList.remove('intro');},4000)
 
   <div class="canvas" id="canvas">
     <nav class="nav" id="nav">
-      <svg class="mark" viewBox="0 0 48 48" fill="none" aria-hidden="true">
-        <defs>
-          <linearGradient id="sw" x1="8" y1="8" x2="40" y2="40" gradientUnits="userSpaceOnUse">
-            <stop offset="0" stop-color="#8ef4ff"/><stop offset=".5" stop-color="#35d8ff"/><stop offset="1" stop-color="#0a86d8"/>
-          </linearGradient>
-          <linearGradient id="sw2" x1="40" y1="10" x2="10" y2="40" gradientUnits="userSpaceOnUse">
-            <stop offset="0" stop-color="#a6f7ff"/><stop offset="1" stop-color="#0f9ae0" stop-opacity=".25"/>
-          </linearGradient>
-        </defs>
-        <g transform="rotate(-32 24 24)">
-          <ellipse cx="24" cy="24" rx="18.5" ry="9.6" stroke="url(#sw2)" stroke-width="3.1" stroke-linecap="round" stroke-dasharray="58 30" stroke-dashoffset="14"/>
-          <circle cx="41.4" cy="20.6" r="3.1" fill="#bff6ff"/>
-        </g>
-        <circle cx="24" cy="24" r="6.6" fill="url(#sw)"/>
-        <circle cx="24" cy="24" r="2.6" fill="#fff"/>
-      </svg>
-      <a href="#" class="wm" aria-label="Vertex Shops home"><span class="kick">SHOPS</span><span class="name" id="wmName">VERTEX</span></a>
+      <a href="#" class="wm" aria-label="Aston Rowe home"><span class="name" id="wmName">ASTON ROWE</span></a>
       <div class="navmenu" id="navmenu">
         <div class="links" id="links">
-          <a href="#">Origin</a><a href="#">Learn how</a><a href="#">Core Vertex</a><a href="#">Prices</a><a href="#">Support</a>
+          <a href="#browser">Our work</a><a href="#why">Why it works</a><a href="#process">Process</a><a href="#faq">FAQ</a><a href="#contact">Contact</a>
         </div>
-        <a href="#" class="btn"><span id="ctaLabel">Build new shop</span></a>
+        <a href="#contact" class="btn"><span id="ctaLabel">Get a free audit</span></a>
       </div>
       <button type="button" class="burger" id="burger" aria-label="Opens menu" aria-expanded="false" aria-controls="navmenu"><span></span><span></span><span></span></button>
     </nav>
 
     <div class="stack">
-      <div class="badge"><i><svg viewBox="5 1 14 22" preserveAspectRatio="none" aria-hidden="true"><path d="M13.9 1.6 5.5 13.6a.7.7 0 0 0 .6 1.1h4.2l-1 7.7a.7.7 0 0 0 1.25.55l8.3-12.1a.7.7 0 0 0-.6-1.1h-4.2l1-7.7a.7.7 0 0 0-1.25-.55Z" fill="rgba(16,112,152,.72)" stroke="rgba(190,236,255,.6)" stroke-width="1.6" stroke-linejoin="round"/></svg></i><b id="badgeTxt">Professionals at store startup</b></div>
-      <h1 class="h1 l1" id="h1a">Streamline the shop</h1>
-      <div class="h1" id="h1b">Process</div>
-      <p class="sub s1" id="sub1"><b>Restructuring store systems / <span class="nb">E-commerce</span></b> orchestrated with</p>
-      <p class="sub" id="sub2">checkouts, performance, a sustainable expansion.</p>
-      <a href="#" class="btn cta2"><span id="vpLabel">See prices</span></a>
+      <div class="badge"><i><svg viewBox="5 1 14 22" preserveAspectRatio="none" aria-hidden="true"><path d="M13.9 1.6 5.5 13.6a.7.7 0 0 0 .6 1.1h4.2l-1 7.7a.7.7 0 0 0 1.25.55l8.3-12.1a.7.7 0 0 0-.6-1.1h-4.2l1-7.7a.7.7 0 0 0-1.25-.55Z" fill="rgba(16,112,152,.72)" stroke="rgba(190,236,255,.6)" stroke-width="1.6" stroke-linejoin="round"/></svg></i><b id="badgeTxt">Trusted by over 25 trades businesses</b></div>
+      <h1 class="h1 l1" id="h1a">Websites that win <span class="sr">construction leads</span></h1>
+      <div class="h1" id="h1b" aria-hidden="true">Construction leads</div>
+      <p class="sub s1" id="sub1">Most construction websites are just online brochures.</p>
+      <p class="sub" id="sub2"><b>Ours actually bring in calls, quotes and booked jobs.</b></p>
+      <a href="#browser" class="btn cta2"><span id="vpLabel">See our work</span></a>
     </div>
 
     <div class="showcase">
@@ -531,6 +518,14 @@ function fitW(el,target){
   var base=fontOf(el).size, w=inkWidth(el);
   el.style.fontSize=(base*target/w)+'px';
 }
+function fitNat(el,maxW,tc,pre){
+  pre=pre||'';
+  el.style.transform=pre;
+  el.style.fontSize=(tc/capRatio(el))+'px';
+  var w=inkWidth(el), sx=Math.min(1,maxW/w);
+  el.style.transform=(pre+(sx<1?' scaleX('+sx+')':'')).trim();
+  return w*sx;
+}
 function fitBox(el,tw,tc,pre){
   pre=pre||'';
   el.style.transform=pre;
@@ -562,20 +557,24 @@ function layout(){
     // hand back everything the fitter wrote, including transform, or the headline
     // stays shifted after resizing down from desktop
     FIT.forEach(function(el){el.style.fontSize='';el.style.top='';el.style.transform='';});
+    [FIT[4].parentElement,FIT[7].parentElement].forEach(function(el){el.style.width='';el.style.left='';});
     links.style.fontSize=''; links.style.transform='';
     as.forEach(function(a){a.style.fontSize=''});
     placeCards(); return;
   }
   var T=tablet?tboost:1;
   var h1a=FIT[0],h1b=FIT[1],sub1=FIT[2],sub2=FIT[3],bt=FIT[4],wm=FIT[5],cl=FIT[6],vl=FIT[7];
-  fitBox(h1a,563.5*T,37.2*T,'translateX(-50%)'); baseline(h1a,204.5);
-  fitBox(h1b,197.5*T,37.2*T,'translateX(-50%)'); baseline(h1b,258.5);
-  fitBox(sub1,389*T,8.4*T,'translateX(-50%)');   baseline(sub1,300.5);
-  fitBox(sub2,311*T,8.4*T,'translateX(-50%)');   baseline(sub2,316.5);
-  fitBox(bt,184*T,9.4*T,'translate(2px,-1px)');
-  fitBox(wm,51*T,11.4*T); baseline(wm,38.5);
-  fitBox(cl,87*T,8.9*T); centreLabel(cl.parentElement,cl,8.9*T);
-  fitBox(vl,76*T,9.5*T); centreLabel(vl.parentElement,vl,9.5*T);
+  fitNat(h1a,700*T,37.2*T,'translateX(-50%)'); baseline(h1a,204.5);
+  fitNat(h1b,700*T,37.2*T,'translateX(-50%)'); baseline(h1b,258.5);
+  fitNat(sub1,560*T,8.4*T,'translateX(-50%)');  baseline(sub1,300.5);
+  fitNat(sub2,560*T,8.4*T,'translateX(-50%)');  baseline(sub2,316.5);
+  var bw=fitNat(bt,300*T,9.4*T,'translate(2px,-1px)'), badge=bt.parentElement;
+  badge.style.width=(45+bw+16)+'px'; badge.style.left=(586-(45+bw+16)/2)+'px';
+  fitNat(wm,120*T,11.4*T); baseline(wm,38.5);
+  fitNat(cl,100*T,8.9*T); centreLabel(cl.parentElement,cl,8.9*T);
+  var cw=fitNat(vl,180*T,9.5*T), cta=vl.parentElement;
+  cta.style.width=(cw+48)+'px'; cta.style.left=(586-(cw+48)/2)+'px';
+  centreLabel(cta,vl,9.5*T);
   links.style.transform='';
   as.forEach(function(a){a.style.fontSize=''});
   if(!tablet){
