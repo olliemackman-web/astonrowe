@@ -182,6 +182,14 @@ a{text-decoration:none;color:inherit}
 .pane{flex:0 0 100%;height:100%;overflow-y:auto;overscroll-behavior-y:auto;touch-action:pan-y;
   scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.22) transparent}
 .pane img{display:block;width:100%;height:auto;user-select:none;-webkit-user-select:none;-webkit-user-drag:none}
+/* live embeds: the iframe gets a real desktop (1440) or phone (390) viewport and is
+   scaled down to the pane, so each site lays out exactly as it does for a visitor.
+   The screenshot underneath shows while the live site loads. */
+.pane.embed{position:relative;overflow:hidden}
+.pane.embed img{position:absolute;left:0;top:0}
+.pane iframe{position:absolute;left:0;top:0;border:0;background:transparent;transform-origin:0 0;
+  opacity:0;transition:opacity .4s}
+.pane iframe.ready{opacity:1}
 @media (prefers-reduced-motion:reduce){.track{transition:none}}
 
 /* floating WhatsApp (outside .canvas, inside .stage) */
@@ -398,11 +406,13 @@ stars($('#stA'),150,0,.05,.30);
 stars($('#stB'),18,1.2,.35,.70);
 
 /* ---------- client sites: feed both the ring cards and the browser switcher ---------- */
+// embed:false = the site refuses to be framed (X-Frame-Options / frame-ancestors), so it
+// falls back to a scrollable screenshot until that header is relaxed
 var SITES=[
- {id:'harry',     name:'Harry James',     short:'Harry James', url:'https://harryjamesconstruction.co.uk',          c:'#3f8f4f', alt:'Harry James Construction website, full page'},
- {id:'render',    name:'The Render Team', short:'Render Team', url:'https://therenderteam.com',                     c:'#f05a1a', alt:'The Render Team website, full page'},
- {id:'prime',     name:'Prime M&E',       short:'Prime',       url:'https://primemechanicalengineeringservices.com', c:'#e0772b', alt:'Prime Mechanical Engineering Services website, full page'},
- {id:'brightduct',name:'Brightduct',      short:'Brightduct',  url:'https://brightductinstallations.com',           c:'#7b5cff', alt:'Brightduct Insulation website, full page'}
+ {id:'harry',     name:'Harry James',     short:'Harry James', url:'https://harryjamesconstruction.co.uk',          embed:true,  c:'#3f8f4f', alt:'Harry James Construction website, full page'},
+ {id:'render',    name:'The Render Team', short:'Render Team', url:'https://therenderteam.com',                     embed:false, c:'#f05a1a', alt:'The Render Team website, full page'},
+ {id:'prime',     name:'Prime M&E',       short:'Prime',       url:'https://primemechanicalengineeringservices.com', embed:true,  c:'#e0772b', alt:'Prime Mechanical Engineering Services website, full page'},
+ {id:'brightduct',name:'Brightduct',      short:'Brightduct',  url:'https://brightductinstallations.com',           embed:true,  c:'#7b5cff', alt:'Brightduct Insulation website, full page'}
 ];
 // 8 phone screenshots (each site's hero, then its next screen), cycled round the ring
 var CARDS=[];
@@ -588,15 +598,35 @@ SITES.forEach(function(s,i){
   tabsEl.appendChild(t); tabs.push(t);
   var p=document.createElement('div');
   p.className='pane'; p.id='pane-'+s.id; p.setAttribute('role','tabpanel'); p.setAttribute('aria-labelledby',t.id);
-  p.innerHTML='<img alt="'+s.alt+'" draggable="false">';
+  if(s.embed){
+    p.classList.add('embed');
+    p.innerHTML='<img alt="" draggable="false"><iframe title="'+s.name+' website (live)" referrerpolicy="no-referrer-when-downgrade"></iframe>';
+    p.lastChild.addEventListener('load',function(){ if(this.getAttribute('src')) this.classList.add('ready'); });
+  }else{
+    p.innerHTML='<img alt="'+s.alt+'" draggable="false">';
+  }
   track.appendChild(p); panes.push(p);
 });
 function siteSrc(i){ return 'images/sites/'+SITES[i].id+(mobile?'-m':'')+'.jpg'; }
+var SITE_W_DESK=1440, SITE_W_MOB=390;
+function sizeFrames(){
+  panes.forEach(function(p){
+    var f=p.querySelector('iframe'); if(!f) return;
+    var w=mobile?SITE_W_MOB:SITE_W_DESK, sc=p.clientWidth/w;
+    if(!sc) return;
+    f.style.width=w+'px';
+    f.style.height=(p.clientHeight/sc)+'px';
+    f.style.transform='scale('+sc+')';
+  });
+}
 function loadImgs(){
   panes.forEach(function(p,i){
-    var img=p.firstChild, want=siteSrc(i);
-    if((i===cur||loadAll) && img.getAttribute('src')!==want){ img.src=want; p.scrollTop=0; }
+    var img=p.querySelector('img'), want=siteSrc(i);
+    if((i===cur||loadAll) && img.getAttribute('src')!==want){ img.src=want; if(!SITES[i].embed) p.scrollTop=0; }
+    var f=p.querySelector('iframe');
+    if(f && i===cur && !f.getAttribute('src')) f.src=SITES[i].url;
   });
+  sizeFrames();
 }
 function go(i){
   cur=(i+SITES.length)%SITES.length;
