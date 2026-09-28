@@ -16,7 +16,7 @@ body{font-family:Poppins,Inter,system-ui,sans-serif;color:#fff;-webkit-font-smoo
 a{text-decoration:none;color:inherit}
 
 /* ---------- 1. fixed 1172x657 design canvas, scaled by one transform ---------- */
-.stage{position:relative;min-height:100vh;overflow:hidden;background:#020204}
+.stage{position:relative;height:100vh;height:100svh;overflow:hidden;background:#020204}   /* the hero is exactly one screen */
 .canvas{position:absolute;left:50%;top:0;width:1172px;height:657px;
   /* zoom (not transform:scale) so the browser re-rasterises at the real size:
      a scale transform upsamples a 1x bitmap and makes text and cards look soft */
@@ -147,9 +147,9 @@ a{text-decoration:none;color:inherit}
 .card.broken img{display:none}
 .card img{object-position:50% 0}
 
-/* ---------- 9. browser mock: client site switcher ---------- */
+/* ---------- 9. hero browser mock: a preview that cycles the client sites ---------- */
 .browser{position:absolute;left:165px;top:558px;width:842px;
-  height:var(--bh,99px);          /* set by JS: at least MOCK_H, or down to the fold */
+  height:var(--bh,99px);          /* set by JS so the mock always reaches the fold */
   border-radius:28px 28px 0 0;overflow:hidden;z-index:100;
   box-shadow:0 -14px 44px rgba(0,0,0,.55)}
 .browser::before{content:"";position:absolute;left:0;right:0;top:42px;bottom:0;
@@ -159,41 +159,184 @@ a{text-decoration:none;color:inherit}
   -webkit-backdrop-filter:blur(6px) saturate(112%);backdrop-filter:blur(6px) saturate(112%)}
 .dots{position:absolute;left:27px;top:16px;display:flex;gap:2.6px}
 .dots i{width:7.6px;height:7.6px;border-radius:50%}
-.navbtns{position:absolute;left:70px;top:9px;display:flex;gap:3px}
-.navbtns button{width:24px;height:24px;border:0;border-radius:7px;background:transparent;
-  color:rgba(255,255,255,.7);display:grid;place-items:center;cursor:pointer;transition:background .2s,color .2s}
-.navbtns button:hover{background:rgba(255,255,255,.08);color:#fff}
-.navbtns svg{width:12px;height:12px}
 .tabs{position:absolute;left:132px;right:118px;top:7px;height:28px;display:flex;gap:4px}
 .tab{flex:1 1 0;min-width:0;display:flex;align-items:center;gap:7px;padding:0 10px;border:0;border-radius:7px;
   background:rgba(255,255,255,.035);color:rgba(255,255,255,.62);font:500 10px/1 Poppins,system-ui,sans-serif;
-  cursor:pointer;white-space:nowrap;box-shadow:inset 0 0 0 1px rgba(255,255,255,.04);
-  transition:background .2s,color .2s,box-shadow .2s}
-.tab:hover{background:rgba(255,255,255,.07);color:#fff}
-.tab[aria-selected=true]{background:rgba(9,13,26,.93);color:#fff;box-shadow:inset 0 0 0 1px rgba(120,225,255,.24)}
-.tab:focus-visible,.navbtns button:focus-visible,.visit:focus-visible{outline:2px solid rgba(120,225,255,.7);outline-offset:1px}
+  white-space:nowrap;box-shadow:inset 0 0 0 1px rgba(255,255,255,.04);
+  transition:background .3s,color .3s,box-shadow .3s}
+.tab.on,.tab[aria-selected=true]{background:rgba(9,13,26,.93);color:#fff;box-shadow:inset 0 0 0 1px rgba(120,225,255,.24)}
 .tab i{width:7px;height:7px;border-radius:50%;flex:none;background:var(--c)}
 .tab span{overflow:hidden;text-overflow:ellipsis}
 .tab .s{display:none}
-.visit{position:absolute;right:20px;top:7px;height:28px;display:flex;align-items:center;gap:5px;padding:0 10px;
-  border-radius:7px;font-size:10px;font-weight:500;color:rgba(255,255,255,.8);transition:background .2s,color .2s}
-.visit:hover{background:rgba(255,255,255,.08);color:#fff}
-.visit svg{width:10px;height:10px}
+.peek .tabs{left:70px}
+.peekgo{position:absolute;right:20px;top:7px;height:28px;display:flex;align-items:center;gap:5px;padding:0 10px;
+  border-radius:7px;font-size:10px;font-weight:500;color:rgba(255,255,255,.85)}
+.peekgo svg{width:10px;height:10px}
 .page{position:absolute;left:7px;right:6px;top:42px;bottom:0;background:#0b0d12;
   overflow:hidden;border-radius:10px 10px 0 0}
+.peek .page img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 0;
+  opacity:0;transition:opacity .9s ease}
+.peek .page img.on{opacity:1}
+.peeklink{position:absolute;inset:0;z-index:5}
+.peek:hover .peekgo{color:#fff}
+
+/* ---------- work section: the interactive client site viewer ---------- */
+.viewer{position:relative;width:100%;height:clamp(460px,74vh,780px);border-radius:22px;overflow:hidden;
+  background:rgba(20,20,26,.9);box-shadow:0 0 0 1px rgba(255,255,255,.09),0 50px 100px -40px rgba(0,0,0,.9),0 0 80px -20px rgba(25,127,255,.18)}
+.viewer .bar{height:50px}
+.viewer .dots{left:22px;top:21px;gap:6px}
+.viewer .dots i{width:10px;height:10px}
+.navbtns{position:absolute;left:84px;top:12px;display:flex;gap:4px}
+.navbtns button{width:28px;height:28px;border:0;border-radius:8px;background:transparent;
+  color:rgba(255,255,255,.72);display:grid;place-items:center;cursor:pointer;transition:background .2s,color .2s}
+.navbtns button:hover{background:rgba(255,255,255,.08);color:#fff}
+.navbtns svg{width:14px;height:14px}
+.viewer .tabs{left:158px;right:16px;top:10px;height:30px;gap:6px}
+.viewer .tab{font-size:13px;cursor:pointer;padding:0 14px;border-radius:9px}
+.viewer .tab:hover{background:rgba(255,255,255,.07);color:#fff}
+.viewer .tab i{width:8px;height:8px}
+.tab:focus-visible,.navbtns button:focus-visible{outline:2px solid rgba(120,225,255,.7);outline-offset:1px}
+.viewer .page{top:50px;left:6px;right:6px;bottom:6px;border-radius:12px}
 .track{display:flex;height:100%;transition:transform .55s cubic-bezier(.16,1,.3,1)}
-.pane{flex:0 0 100%;height:100%;overflow-y:auto;overscroll-behavior-y:auto;touch-action:pan-y;
+.pane{position:relative;flex:0 0 100%;height:100%;overflow-y:auto;overscroll-behavior-y:auto;touch-action:pan-y;
   scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.22) transparent}
 .pane img{display:block;width:100%;height:auto;user-select:none;-webkit-user-select:none;-webkit-user-drag:none}
 /* live embeds: the iframe gets a real desktop (1440) or phone (390) viewport and is
    scaled down to the pane, so each site lays out exactly as it does for a visitor.
    The screenshot underneath shows while the live site loads. */
-.pane.embed{position:relative;overflow:hidden}
+.pane.embed{overflow:hidden}
 .pane.embed img{position:absolute;left:0;top:0}
 .pane iframe{position:absolute;left:0;top:0;border:0;background:transparent;transform-origin:0 0;
   opacity:0;transition:opacity .4s}
 .pane iframe.ready{opacity:1}
-@media (prefers-reduced-motion:reduce){.track{transition:none}}
+.shotnote{position:sticky;top:12px;float:right;margin:12px 12px -40px 0;z-index:2;display:inline-flex;align-items:center;gap:6px;
+  padding:7px 12px;border-radius:999px;background:rgba(9,13,26,.88);color:#fff;font-size:12px;font-weight:500;
+  box-shadow:inset 0 0 0 1px rgba(120,225,255,.3);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.shotnote svg{width:11px;height:11px}
+.vfoot{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-top:18px;
+  font-size:14px;color:var(--muted)}
+.vfoot a{display:inline-flex;align-items:center;gap:6px;color:#fff;font-weight:500;border-bottom:1px solid rgba(120,225,255,.5);padding-bottom:2px}
+.vfoot a:hover{border-color:#fff}
+.vfoot svg{width:12px;height:12px}
+@media (prefers-reduced-motion:reduce){.track,.peek .page img{transition:none}}
+
+/* ---------- content sections below the hero ---------- */
+:root{--muted:#a9aeb5;--line:rgba(255,255,255,.09);--cyan:#6fdcf0}
+.sec{position:relative;padding:120px 24px;background:#020204}
+.sec.alt{background:linear-gradient(180deg,#020204,#050912 50%,#020204)}
+.wrap{max-width:1180px;margin:0 auto}
+.head{max-width:720px;margin:0 auto 56px;text-align:center}
+.head.left{margin-left:0;text-align:left}
+.eyebrow{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan)}
+.sec h2{font-size:clamp(32px,4.6vw,52px);font-weight:800;line-height:1.05;letter-spacing:-.025em;margin:14px 0 18px}
+.head p{font-size:18px;line-height:1.6;color:var(--muted)}
+.btn.lg{display:inline-grid;height:54px;padding:0 30px;border-radius:14px;font-size:16px;font-weight:500;--hair:0 0 0 transparent}
+.btn.lg::before{display:none}
+.ghost{display:inline-flex;align-items:center;height:54px;padding:0 26px;border-radius:14px;font-size:16px;font-weight:500;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.16);transition:box-shadow .2s,background .2s}
+.ghost:hover{box-shadow:inset 0 0 0 1px rgba(255,255,255,.4);background:rgba(255,255,255,.03)}
+.ctarow{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+
+/* glass card, same foot-light language as the hero badge */
+.card2{position:relative;border-radius:20px;padding:30px;border:1px solid var(--line);
+  background:linear-gradient(to top,rgba(190,225,255,.07) 0,rgba(190,225,255,.02) 3px,rgba(255,255,255,.015) 40px,rgba(255,255,255,.015) 100%)}
+.tile{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;margin-bottom:22px;
+  background:linear-gradient(to top,#46afc8 0,#0b859d 4px,#004e66 8px,#031a2a 16px,#090c1c 30px,#060d16 46px);
+  box-shadow:inset 1px 0 0 rgba(150,220,250,.4),inset -1px 0 0 rgba(150,220,250,.5),0 3px 10px -6px rgba(90,220,255,.6)}
+.tile svg{width:22px;height:22px;color:#dff8ff}
+.card2 h3{font-size:20px;font-weight:600;letter-spacing:-.01em;margin-bottom:10px}
+.card2 p{font-size:15.5px;line-height:1.6;color:var(--muted)}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+
+/* problem strip */
+.pains{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:18px}
+.pain h3{display:flex;align-items:center;gap:10px}
+.pain h3 b{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;flex:none;
+  background:rgba(238,92,98,.14);color:#ff8a8f;font-size:13px}
+.verdict{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;
+  padding:30px 34px;border-radius:20px;border:1px solid rgba(120,225,255,.22);
+  background:radial-gradient(120% 140% at 0% 0%,rgba(25,127,255,.14),rgba(25,127,255,0) 60%),rgba(255,255,255,.015)}
+.verdict p{font-size:clamp(20px,2.4vw,26px);font-weight:600;letter-spacing:-.015em;line-height:1.3;max-width:720px}
+.verdict p span{color:var(--cyan)}
+
+/* process */
+.step .n{font-size:44px;font-weight:800;letter-spacing:-.04em;line-height:1;
+  background:linear-gradient(180deg,#bff6ff,#3ec8e4);-webkit-background-clip:text;background-clip:text;color:transparent}
+.step h3{margin-top:22px}
+.step small{display:inline-block;margin-top:18px;font-size:12.5px;font-weight:500;color:#dff8ff;
+  padding:5px 12px;border-radius:999px;background:rgba(120,225,255,.08);box-shadow:inset 0 0 0 1px rgba(120,225,255,.18)}
+
+/* faq */
+.faq{max-width:860px;margin:0 auto}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:20px;
+  padding:26px 0;cursor:pointer;font-size:19px;font-weight:600;letter-spacing:-.01em}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary i{width:32px;height:32px;flex:none;border-radius:50%;position:relative;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.16);transition:background .3s}
+.faq summary i::before,.faq summary i::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:1.8px;
+  background:#fff;transform:translate(-50%,-50%);transition:transform .3s}
+.faq summary i::after{transform:translate(-50%,-50%) rotate(90deg)}
+.faq details[open] summary i{background:rgba(120,225,255,.15)}
+.faq details[open] summary i::after{transform:translate(-50%,-50%) rotate(0)}
+.faq details p{padding:0 56px 26px 0;color:var(--muted);line-height:1.65}
+
+/* contact */
+.contact{display:grid;grid-template-columns:1fr 1.05fr;gap:64px;align-items:start}
+.checks{list-style:none;display:grid;gap:14px;margin:30px 0}
+.checks li{display:flex;gap:12px;color:#e6e8eb}
+.checks svg{width:20px;height:20px;flex:none;color:var(--cyan);margin-top:2px}
+form.card2{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:34px}
+form h3{grid-column:1/-1;font-size:22px;margin-bottom:4px}
+form .full{grid-column:1/-1}
+form label{display:grid;gap:7px;font-size:13.5px;font-weight:500;color:#dfe2e6}
+form input,form select,form textarea{font:inherit;font-size:15.5px;color:#fff;padding:13px 15px;border-radius:12px;
+  border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);transition:border-color .2s,background .2s;width:100%}
+form select option{color:#111}
+form input:focus,form select:focus,form textarea:focus{outline:none;border-color:rgba(120,225,255,.6);background:rgba(120,225,255,.04)}
+form textarea{min-height:110px;resize:vertical}
+form .btn.lg{grid-column:1/-1;width:100%;margin-top:6px}
+.fnote{grid-column:1/-1;text-align:center;font-size:13px;color:var(--muted)}
+
+footer{padding:40px 24px;border-top:1px solid var(--line);background:#020204;color:var(--muted);font-size:14px}
+.foot{max-width:1180px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.foot b{color:#fff;font-weight:900;letter-spacing:-.01em;word-spacing:.18em}
+.foot nav{display:flex;gap:22px;flex-wrap:wrap}
+.foot a:hover{color:#fff}
+
+/* reveal on scroll */
+.rv{opacity:0;translate:0 22px;transition:opacity .8s cubic-bezier(.16,1,.3,1),translate .8s cubic-bezier(.16,1,.3,1)}
+.rv.in{opacity:1;translate:none}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;translate:none;transition:none}}
+
+@media (max-width:960px){
+  .grid3,.pains{grid-template-columns:1fr}
+  .grid4{grid-template-columns:1fr 1fr}
+  .contact{grid-template-columns:1fr;gap:40px}
+}
+@media (max-width:700px){
+  .sec{padding:84px 16px}
+  .head{margin-bottom:40px}
+  .head p{font-size:16.5px}
+  .grid4{grid-template-columns:1fr}
+  .card2{padding:24px}
+  form.card2{grid-template-columns:1fr;padding:24px 20px}
+  .verdict{padding:24px}
+  .faq summary{font-size:17px}
+  .faq details p{padding-right:0}
+  .viewer{height:78svh;border-radius:18px;margin:0 -8px;width:calc(100% + 16px)}
+  .viewer .bar{height:46px}
+  .viewer .dots,.navbtns{display:none}
+  .viewer .tabs{left:8px;right:8px;top:8px}
+  .viewer .tab{justify-content:center;padding:0 2px;font-size:10.5px;letter-spacing:-.01em}
+  .viewer .tabs{gap:4px}
+  .viewer .tab i,.viewer .tab .l{display:none}
+  .viewer .tab .s{display:inline}
+  .viewer .page{top:46px;left:4px;right:4px;bottom:4px}
+  .ctarow .btn,.ctarow .ghost{width:100%;justify-content:center}
+  footer{padding-bottom:100px}
+}
 
 /* floating WhatsApp (outside .canvas, inside .stage) */
 .wa{position:fixed;right:16px;bottom:24px;width:56px;height:56px;border-radius:50%;
@@ -251,7 +394,7 @@ a{text-decoration:none;color:inherit}
 
 /* ---------- phone <=700: a genuine flow column ---------- */
 @media (max-width:700px){
-  .canvas{position:relative;left:auto;top:auto;width:100%;height:auto;min-height:100svh;transform:none;zoom:1;
+  .canvas{position:relative;left:auto;top:auto;width:100%;height:100%;transform:none;zoom:1;
     display:flex;flex-direction:column;align-items:center;padding:0 20px}
   .canvas>*{position:static}
   .stack{display:contents}
@@ -282,7 +425,7 @@ a{text-decoration:none;color:inherit}
   .sub.s1{margin-top:clamp(10px,1.8vh,16px)}
   .cta2{position:relative;left:auto;top:auto;margin-top:clamp(16px,2.6vh,26px);
     flex:0 0 auto;width:auto;min-width:158px;height:52px;padding:0 26px;font-size:16px}
-  .showcase{position:relative;left:auto;top:auto;flex:0 0 auto;width:100%;height:calc(212px + min(78svh,720px))}
+  .showcase{position:relative;left:auto;top:auto;flex:1 1 auto;width:100%;height:auto;min-height:224px}
   /* the ring keeps its full 1172x657 3D geometry, just repositioned and clipped */
   .ring{position:absolute;left:50%;margin-left:-586px;top:-446px;bottom:auto;
     width:1172px;height:657px;transform-origin:586px 466px;transform:scale(1.02)}
@@ -290,13 +433,12 @@ a{text-decoration:none;color:inherit}
     width:calc(100% + 40px);height:auto;border-radius:22px 22px 0 0}
   .browser .bar{height:40px}
   .browser::before{top:40px}
-  .dots,.navbtns,.visit{display:none}
-  .tabs{left:10px;right:10px;top:6px}
-  .tab{justify-content:center;padding:0 3px;font-size:10.5px;letter-spacing:-.01em}
-  .tab i{display:none}
-  .tab .l{display:none}
-  .tab .s{display:inline}
-  .page{top:40px}
+  .browser .dots,.peekgo{display:none}
+  .browser .tabs{left:10px;right:10px;top:6px}
+  .browser .tab{justify-content:center;padding:0 3px;font-size:10.5px;letter-spacing:-.01em}
+  .browser .tab i,.browser .tab .l{display:none}
+  .browser .tab .s{display:inline}
+  .browser .page{top:40px}
   .wa{width:54px;height:54px;right:14px;bottom:16px}
   .wa svg{width:29px;height:29px}
 }
@@ -336,7 +478,7 @@ setTimeout(function(){document.documentElement.classList.remove('intro');},4000)
       <a href="#" class="wm" aria-label="Aston Rowe home"><span class="name" id="wmName">ASTON ROWE</span></a>
       <div class="navmenu" id="navmenu">
         <div class="links" id="links">
-          <a href="#browser">Our work</a><a href="#why">Why it works</a><a href="#process">Process</a><a href="#faq">FAQ</a><a href="#contact">Contact</a>
+          <a href="#work">Our work</a><a href="#why">Why it works</a><a href="#process">Process</a><a href="#faq">FAQ</a><a href="#contact">Contact</a>
         </div>
         <a href="#contact" class="btn"><span id="ctaLabel">Get a free audit</span></a>
       </div>
@@ -349,22 +491,19 @@ setTimeout(function(){document.documentElement.classList.remove('intro');},4000)
       <div class="h1" id="h1b" aria-hidden="true">Construction leads</div>
       <p class="sub s1" id="sub1">Most construction websites are just online brochures.</p>
       <p class="sub" id="sub2"><b>Ours actually bring in calls, quotes and booked jobs.</b></p>
-      <a href="#browser" class="btn cta2"><span id="vpLabel">See our work</span></a>
+      <a href="#work" class="btn cta2"><span id="vpLabel">See our work</span></a>
     </div>
 
     <div class="showcase">
       <div class="ring" id="ring"></div>
-      <div class="browser" id="browser">
+      <div class="browser peek" id="browser">
         <div class="bar">
           <div class="dots"><i style="background:#ee5c62"></i><i style="background:#f6b719"></i><i style="background:#12c02f"></i></div>
-          <div class="navbtns">
-            <button type="button" id="prevSite" aria-label="Previous client website"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
-            <button type="button" id="nextSite" aria-label="Next client website"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
-          </div>
-          <div class="tabs" id="tabs" role="tablist" aria-label="Client websites"></div>
-          <a class="visit" id="visit" href="#" target="_blank" rel="noopener">Visit site <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+          <div class="tabs" id="peekTabs" aria-hidden="true"></div>
+          <span class="peekgo" aria-hidden="true">Try them live <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></span>
         </div>
-        <div class="page" id="page"><div class="track" id="track"></div></div>
+        <div class="page" id="peekPage"></div>
+        <a class="peeklink" href="#work" aria-label="See the websites we have built"></a>
       </div>
     </div>
   </div>
@@ -373,6 +512,154 @@ setTimeout(function(){document.documentElement.classList.remove('intro');},4000)
     <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3.5C9.1 3.5 3.5 9 3.5 15.8c0 2.4.7 4.7 1.9 6.6L3.5 28.5l6.3-1.9c1.8 1 3.9 1.6 6.2 1.6 6.9 0 12.5-5.5 12.5-12.4S22.9 3.5 16 3.5Z" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round"/><path d="M12 9.9c-.3-.6-.6-.6-.9-.6h-.8c-.3 0-.7.1-1.1.5-.4.4-1.4 1.4-1.4 3.4s1.5 3.9 1.7 4.2c.2.3 2.9 4.6 7.1 6.3 3.5 1.4 4.2 1.1 5 1 .8-.1 2.4-1 2.8-2 .3-1 .3-1.8.2-2-.1-.2-.4-.3-.8-.5l-2.9-1.4c-.4-.1-.7-.2-.9.2-.3.4-1.1 1.4-1.3 1.6-.2.3-.5.3-.9.1-.4-.2-1.8-.7-3.4-2.1-1.3-1.1-2.1-2.5-2.4-2.9-.2-.4 0-.6.2-.8l.6-.7c.2-.2.3-.4.4-.7.1-.3.1-.5 0-.7L12 9.9Z" fill="#fff"/></svg>
   </a>
 </div>
+
+<main>
+
+<!-- ===== OUR WORK: live client sites ===== -->
+<section class="sec" id="work">
+  <div class="wrap">
+    <div class="head rv">
+      <span class="eyebrow">Our work</span>
+      <h2>Don't take our word for it. Try the websites.</h2>
+      <p>These are real, live sites we've built for construction and trade businesses. Scroll, click around and see how every page is built to turn visitors into enquiries.</p>
+    </div>
+    <div class="viewer rv">
+      <div class="bar">
+        <div class="dots"><i style="background:#ee5c62"></i><i style="background:#f6b719"></i><i style="background:#12c02f"></i></div>
+        <div class="navbtns">
+          <button type="button" id="prevSite" aria-label="Previous client website"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+          <button type="button" id="nextSite" aria-label="Next client website"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+        </div>
+        <div class="tabs" id="tabs" role="tablist" aria-label="Client websites"></div>
+      </div>
+      <div class="page" id="page"><div class="track" id="track"></div></div>
+    </div>
+    <div class="vfoot rv">
+      <span>Scroll inside the screen to explore. Use the tabs to switch between sites.</span>
+      <a id="visit" href="#" target="_blank" rel="noopener">Open this site in a new tab <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="verdict rv">
+      <p>Want a website like these that <span>brings in enquiries</span> for your business?</p>
+      <a href="#contact" class="btn lg"><span>Get a free website audit</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WHY IT WORKS ===== -->
+<section class="sec alt" id="why">
+  <div class="wrap">
+    <div class="head rv">
+      <span class="eyebrow">Why it works</span>
+      <h2>A good-looking website isn't enough.</h2>
+      <p>Your next customer is on their phone right now, searching for someone like you. Most construction websites lose them for one of three reasons.</p>
+    </div>
+    <div class="pains">
+      <div class="card2 pain rv"><h3><b>✕</b>Nobody can find it</h3><p>If you don't show up for "builders near me" or "extension in [your town]", that job goes to a competitor.</p></div>
+      <div class="card2 pain rv"><h3><b>✕</b>It's slow on a phone</h3><p>Most people looking for a trade are on mobile. A slow, awkward site gets closed before the first photo loads.</p></div>
+      <div class="card2 pain rv"><h3><b>✕</b>No reason to get in touch</h3><p>A buried phone number and a generic contact page don't make anyone pick up the phone.</p></div>
+    </div>
+    <div class="head rv" style="margin-top:90px">
+      <span class="eyebrow">What we build in</span>
+      <h2>Every site is built to make the phone ring.</h2>
+      <p>All of this comes as standard, on every website we build.</p>
+    </div>
+    <div class="grid3">
+      <div class="card2 rv"><div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></div><h3>Found on Google</h3><p>A page for every service and every town you cover, so you show up where your customers are searching.</p></div>
+      <div class="card2 rv"><div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></div><h3>Built to convert</h3><p>Click-to-call and a quote button on every screen, with forms that ask for job type, location and budget.</p></div>
+      <div class="card2 rv"><div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg></div><h3>Fast on every phone</h3><p>Designed for thumbs first and quick on a 4G signal in a van, not just on a desktop in an office.</p></div>
+      <div class="card2 rv"><div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg></div><h3>Projects that sell</h3><p>Your best work shown properly. Photos do the selling long before you've spoken to the customer.</p></div>
+      <div class="card2 rv"><div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div><h3>Trust up front</h3><p>Reviews, accreditations, guarantees and insurance, right where people decide whether to call.</p></div>
+      <div class="card2 rv"><div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 6-6"/></svg></div><h3>Enquiry tracking</h3><p>See where your calls and quote requests come from, so you know what's working and where to spend.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROCESS ===== -->
+<section class="sec" id="process">
+  <div class="wrap">
+    <div class="head rv">
+      <span class="eyebrow">Process</span>
+      <h2>From first call to live site, without the hassle.</h2>
+      <p>You're busy on site. We keep it simple and do the heavy lifting, including writing every word.</p>
+    </div>
+    <div class="grid4">
+      <div class="card2 step rv"><div class="n">01</div><h3>Free audit</h3><p>We look at your current site, your competitors and your local search results, and show you where leads are slipping away.</p><small>No obligation</small></div>
+      <div class="card2 step rv"><div class="n">02</div><h3>Plan &amp; copy</h3><p>We map out your services, areas and the jobs you want more of, then write copy that speaks to your customers.</p><small>We do the writing</small></div>
+      <div class="card2 step rv"><div class="n">03</div><h3>Design &amp; build</h3><p>You see your new site take shape and give feedback at every stage until it's right.</p><small>Weeks, not months</small></div>
+      <div class="card2 step rv"><div class="n">04</div><h3>Launch &amp; grow</h3><p>We go live, connect Google and tracking, and look after hosting, updates and changes for you.</p><small>Ongoing support</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="sec alt" id="faq">
+  <div class="wrap">
+    <div class="head rv">
+      <span class="eyebrow">FAQ</span>
+      <h2>Questions we get asked.</h2>
+    </div>
+    <div class="faq rv">
+      <details open><summary>I already have a website. Why would I need a new one?<i></i></summary><p>If it isn't regularly bringing you enquiries, it isn't doing its job. Our free audit shows exactly where your current site is losing leads. If it only needs fixing rather than rebuilding, we'll tell you.</p></details>
+      <details><summary>Do I need to write the content myself?<i></i></summary><p>No. We write all the copy for you after a short call about your business, your services and the work you want more of. You just check it over.</p></details>
+      <details><summary>Will my website show up on Google?<i></i></summary><p>Every site is built for local search from day one: proper page structure, service and area pages, fast load times and a Google Business Profile set up to work with it.</p></details>
+      <details><summary>What if I need changes after it goes live?<i></i></summary><p>Just send us a message. We handle hosting, updates and changes, so you never have to log into anything or worry about it breaking.</p></details>
+      <details><summary>I don't have many good photos of my work. Is that a problem?<i></i></summary><p>Not at all. We can work with phone photos, help pick your best shots, and tell you what to capture on your next few jobs so your gallery keeps getting stronger.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section class="sec" id="contact">
+  <div class="wrap contact">
+    <div class="rv">
+      <span class="eyebrow">Free website audit</span>
+      <h2>Find out how many leads your website is missing.</h2>
+      <p class="head" style="text-align:left;margin:0;font-size:18px;color:var(--muted);line-height:1.6">Tell us about your business and we'll send you a free, no-obligation review of your current website. It's yours to keep, whether you work with us or not.</p>
+      <ul class="checks">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Where you rank locally compared with your competitors</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>How your site performs on a phone</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>The quick wins that will get you more enquiries</li>
+      </ul>
+    </div>
+    <form class="card2 rv" id="auditForm">
+      <h3>Request your free audit</h3>
+      <label>Your name<input name="name" required autocomplete="name"></label>
+      <label>Company<input name="company" required autocomplete="organization"></label>
+      <label>Email<input name="email" type="email" required autocomplete="email"></label>
+      <label>Phone<input name="phone" type="tel" autocomplete="tel"></label>
+      <label class="full">Current website (if you have one)<input name="website" placeholder="www.yourcompany.co.uk"></label>
+      <label class="full">What work do you want more of?
+        <select name="trade">
+          <option>Residential building &amp; extensions</option>
+          <option>Commercial / subcontracting</option>
+          <option>M&amp;E, plumbing &amp; heating</option>
+          <option>Roofing, rendering &amp; external</option>
+          <option>Landscaping &amp; groundworks</option>
+          <option>Something else</option>
+        </select>
+      </label>
+      <label class="full">Anything else we should know?<textarea name="message" placeholder="e.g. We want more extension enquiries around Colchester"></textarea></label>
+      <button type="submit" class="btn lg"><span>Send my free audit request</span></button>
+      <p class="fnote">No obligation, no hard sell. We'll reply within one working day.</p>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="foot">
+    <b>ASTON ROWE</b>
+    <nav><a href="#work">Our work</a><a href="#why">Why it works</a><a href="#process">Process</a><a href="#faq">FAQ</a><a href="#contact">Contact</a></nav>
+    <span>© <span id="yr"></span> Aston Rowe. Websites for construction.</span>
+  </div>
+</footer>
 
 <script>
 (function(){
@@ -446,8 +733,7 @@ document.addEventListener('visibilitychange',function(){last=null});
 
 /* ---------- 10. scale + responsive architecture ---------- */
 var TAB_MAX=1080, TAB_MIN=701, DW_MIN=920, CW=1172;
-var MOCK_H=560;   // design px: tall enough to show a client site's hero in the mock
-var stage=document.querySelector('.stage');
+
 var k=1, mobile=false, tablet=false, tboost=1;
 
 function setMenu(open){
@@ -456,13 +742,12 @@ function setMenu(open){
 }
 
 function resize(){
-  var vw=window.innerWidth, vh=window.innerHeight;
+  var vw=document.documentElement.clientWidth||window.innerWidth, vh=window.innerHeight;   // clientWidth excludes a classic scrollbar
   mobile=vw<=700; tablet=!mobile&&vw<=TAB_MAX;
   var cs=canvas.style;
   if(mobile){
     k=1; tboost=1;
     ['--k','--bh','--stshift','--sshift','--rs'].forEach(function(p){cs.removeProperty(p)});
-    stage.style.height='';
   }else{
     var W=CW, ramp=0;
     if(tablet){
@@ -487,17 +772,13 @@ function resize(){
       fill-=ss;                                  // the mock keeps only what is left
     }
     cs.setProperty('--k',k);
-    // the mock reaches at least the fold, and is never shorter than MOCK_H; the page
-    // scrolls to reveal the rest of it
-    var bh=Math.max(99+fill, MOCK_H);
-    cs.setProperty('--bh',bh+'px');
-    stage.style.height=Math.max(vh,(558+ss+bh)*k)+'px';
+    cs.setProperty('--bh',(99+fill)+'px');       // the mock always reaches the fold
     cs.setProperty('--stshift',st+'px');
     cs.setProperty('--sshift',ss+'px');
     cs.setProperty('--rs',rs);
   }
   if(!mobile && !tablet && nav.classList.contains('open')) setMenu(false);
-  if(tabs.length) loadImgs();
+  if(tabs.length){ loadImgs(); peekSrc(); }
   layout();
 }
 
@@ -587,7 +868,7 @@ function layout(){
 }
 
 /* ---------- client site switcher ---------- */
-var tabsEl=$('#tabs'), track=$('#track'), visit=$('#visit'), cur=0, panes=[], tabs=[], loadAll=false;
+var tabsEl=$('#tabs'), track=$('#track'), visit=$('#visit'), cur=0, panes=[], tabs=[], loadAll=false, viewerNear=false;
 SITES.forEach(function(s,i){
   var t=document.createElement('button');
   t.type='button'; t.className='tab'; t.id='tab-'+s.id; t.setAttribute('role','tab');
@@ -602,7 +883,7 @@ SITES.forEach(function(s,i){
     p.innerHTML='<img alt="" draggable="false"><iframe title="'+s.name+' website (live)" referrerpolicy="no-referrer-when-downgrade"></iframe>';
     p.lastChild.addEventListener('load',function(){ if(this.getAttribute('src')) this.classList.add('ready'); });
   }else{
-    p.innerHTML='<img alt="'+s.alt+'" draggable="false">';
+    p.innerHTML='<a class="shotnote" href="'+s.url+'" target="_blank" rel="noopener">Screenshot preview · Open the live site <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a><img alt="'+s.alt+'" draggable="false">';
   }
   track.appendChild(p); panes.push(p);
 });
@@ -623,7 +904,7 @@ function loadImgs(){
     var img=p.querySelector('img'), want=siteSrc(i);
     if((i===cur||loadAll) && img.getAttribute('src')!==want){ img.src=want; if(!SITES[i].embed) p.scrollTop=0; }
     var f=p.querySelector('iframe');
-    if(f && i===cur && !f.getAttribute('src')) f.src=SITES[i].url;
+    if(f && i===cur && viewerNear && !f.getAttribute('src')) f.src=SITES[i].url;
   });
   sizeFrames();
 }
@@ -633,7 +914,7 @@ function go(i){
   tabs.forEach(function(t,j){ t.setAttribute('aria-selected',j===cur?'true':'false'); t.tabIndex=j===cur?0:-1; });
   panes.forEach(function(p,j){ p.setAttribute('aria-hidden',j===cur?'false':'true'); });
   visit.href=SITES[cur].url;
-  visit.setAttribute('aria-label','Visit '+SITES[cur].name+' website (opens in a new tab)');
+  visit.firstChild.nodeValue='Open '+SITES[cur].name+' in a new tab ';
   loadImgs();
 }
 $('#prevSite').addEventListener('click',function(){go(cur-1)});
@@ -656,6 +937,54 @@ pageEl.addEventListener('wheel',function(e){
   }
 },{passive:true});
 window.addEventListener('load',function(){ setTimeout(function(){ loadAll=true; loadImgs(); },1200); });
+if('IntersectionObserver' in window){
+  new IntersectionObserver(function(es,o){ if(es[0].isIntersecting){ viewerNear=true; loadImgs(); o.disconnect(); } },{rootMargin:'600px 0px'}).observe($('.viewer'));
+}else{ viewerNear=true; }
+// the sections below the hero have normal widths, so re-fit the embeds when the window changes
+window.addEventListener('resize',sizeFrames);
+
+/* ---------- hero preview: cycles the client sites, click-through to #work ---------- */
+var peekTabs=$('#peekTabs'), peekPage=$('#peekPage'), peekImgs=[], peekTabEls=[], pk=0;
+SITES.forEach(function(s,i){
+  var t=document.createElement('span'); t.className='tab'+(i===0?' on':''); t.style.setProperty('--c',s.c);
+  t.innerHTML='<i></i><span class="l">'+s.name+'</span><span class="s">'+s.short+'</span>';
+  peekTabs.appendChild(t); peekTabEls.push(t);
+  var im=document.createElement('img'); im.alt=''; if(i===0) im.className='on';
+  peekPage.appendChild(im); peekImgs.push(im);
+});
+function peekSrc(){
+  peekImgs.forEach(function(im,i){
+    var want=mobile?'images/cards/'+SITES[i].id+'-0.jpg':'images/sites/'+SITES[i].id+'-top.jpg';
+    if(im.getAttribute('src')!==want) im.src=want;
+  });
+}
+if(!RM.matches) setInterval(function(){
+  if(document.hidden) return;
+  peekImgs[pk].classList.remove('on'); peekTabEls[pk].classList.remove('on');
+  pk=(pk+1)%SITES.length;
+  peekImgs[pk].classList.add('on'); peekTabEls[pk].classList.add('on');
+},3200);
+
+/* ---------- reveal on scroll ---------- */
+var rvs=document.querySelectorAll('.rv');
+if('IntersectionObserver' in window && !RM.matches){
+  var rio=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); rio.unobserve(e.target); } }); },{threshold:.12});
+  rvs.forEach(function(el,i){
+    var sib=[].indexOf.call(el.parentElement.children,el);
+    el.style.transitionDelay=(sib%4)*70+'ms';
+    rio.observe(el);
+  });
+}else{ rvs.forEach(function(el){el.classList.add('in')}); }
+
+/* ---------- audit form: opens the visitor's email app, pre-filled ---------- */
+var CONTACT_EMAIL='hello@astonrowe.co.uk';   // TODO: replace with the real enquiries address
+$('#auditForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  var d=new FormData(e.target), g=function(k){return (d.get(k)||'').toString()};
+  var body='Name: '+g('name')+'\nCompany: '+g('company')+'\nEmail: '+g('email')+'\nPhone: '+g('phone')+'\nWebsite: '+g('website')+'\nWork wanted: '+g('trade')+'\n\n'+g('message');
+  location.href='mailto:'+CONTACT_EMAIL+'?subject='+encodeURIComponent('Free website audit: '+g('company'))+'&body='+encodeURIComponent(body);
+});
+$('#yr').textContent=new Date().getFullYear();
 
 /* ---------- menu ---------- */
 burger.addEventListener('click',function(e){e.stopPropagation();setMenu(!nav.classList.contains('open'))});
